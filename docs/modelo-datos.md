@@ -16,6 +16,7 @@ Sistema IoT para el monitoreo de temperatura en cámaras de frío de una farmaci
 | `sensores` | Sensores instalados en cada cámara (temperatura, humedad, movimiento, luz, etc.). |
 | `lecturas` | Registro histórico de valores por sensor. Un valor genérico por lectura.          |
 | `alertas`  | Alertas generadas por cámara cuando un sensor reporta un valor fuera de rango.    |
+| `usuario_sede` | Asignación muchos-a-muchos entre usuarios y sedes (control de acceso).              |
 
 ---
 
@@ -120,9 +121,26 @@ Sistema IoT para el monitoreo de temperatura en cámaras de frío de una farmaci
 
 ---
 
+### 3.7 `usuario_sede`
+
+Tabla de asignación muchos-a-muchos entre usuarios y sedes. Controla qué sedes puede ver cada usuario.
+
+| Columna      | Tipo    | Restricciones               | Descripción                                      |
+|--------------|---------|-----------------------------|--------------------------------------------------|
+| `usuario_id` | INT     | PK, FK → usuarios(id)       | Usuario asignado a la sede.                      |
+| `sede_id`    | INT     | PK, FK → sedes(id)          | Sede a la que el usuario tiene acceso.           |
+
+**Regla de negocio:**
+- `admin` no tiene entradas en esta tabla → acceso total.
+- `operador` / `tecnico` tiene una o más entradas → solo ve esas sedes.
+
+---
+
 ## 4. Diagrama de relaciones (resumen)
 
 ```
+usuarios (N) ◄──► (N) sedes   (a través de usuario_sede)
+                         
 sedes (1) ──── (N) camaras (1) ──── (N) sensores (1) ──── (N) lecturas
                        │                    │
                        └──── (N) alertas ◄──┘

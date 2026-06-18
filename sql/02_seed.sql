@@ -41,6 +41,19 @@ INSERT INTO camaras (sede_id, nombre, temp_min, temp_max) VALUES
 -- Distribuidora (cámaras 2-4): sensores completos
 -- ============================================================
 
+-- ============================================================
+-- ASIGNACIÓN USUARIO ↔ SEDE
+-- Admin no se inserta (acceso total)
+-- ============================================================
+
+INSERT INTO usuario_sede (usuario_id, sede_id) VALUES
+    (2, 1),   -- Operador Central → Farmacia Central
+    (3, 2);   -- Técnico → Distribuidora Norte
+
+-- ============================================================
+-- SENSORES
+-- ============================================================
+
 INSERT INTO sensores (camara_id, tipo, unidad) VALUES
     -- Cámara 1: Farmacia Central
     (1, 'temperatura', '°C'),

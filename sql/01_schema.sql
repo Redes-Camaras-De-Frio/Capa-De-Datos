@@ -93,3 +93,16 @@ CREATE INDEX idx_lecturas_registrado_en ON lecturas (registrado_en DESC);
 -- Alertas: filtrar por cámara y por estado de resolución
 CREATE INDEX idx_alertas_camara_id ON alertas (camara_id);
 CREATE INDEX idx_alertas_resuelta  ON alertas (resuelta);
+
+-- ============================================================
+-- ASIGNACIÓN USUARIO ↔ SEDE (tenencia múltiple)
+-- ============================================================
+
+CREATE TABLE usuario_sede (
+    usuario_id INT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
+    sede_id    INT NOT NULL REFERENCES sedes(id) ON DELETE CASCADE,
+    PRIMARY KEY (usuario_id, sede_id)
+);
+
+CREATE INDEX idx_usuario_sede_usuario_id ON usuario_sede (usuario_id);
+CREATE INDEX idx_usuario_sede_sede_id    ON usuario_sede (sede_id);
