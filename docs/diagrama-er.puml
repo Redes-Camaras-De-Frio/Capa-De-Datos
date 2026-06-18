@@ -1,5 +1,5 @@
 @startuml
-title Diagrama ER — Sistema de Monitoreo de Cadena de Frío\nv1.0
+title Diagrama ER — Sistema de Monitoreo de Cadena de Frío\nv1.1
 
 left to right direction
 hide circle
@@ -21,6 +21,17 @@ package "auth" {
     *rol         : VARCHAR(20)
     *activo      : BOOLEAN
     created_at   : TIMESTAMP
+  }
+}
+
+' =========================
+' ASIGNACIÓN USUARIO ↔ SEDE
+' =========================
+package "acceso" {
+  entity "usuario_sede" as usuario_sede {
+    *usuario_id  : INT          <<PK,FK>>
+    --
+    *sede_id     : INT          <<PK,FK>>
   }
 }
 
@@ -89,6 +100,8 @@ package "monitoreo" {
 ' =========================
 ' RELACIONES
 ' =========================
+usuarios  ||--o{ usuario_sede : usuario_id
+sedes     ||--o{ usuario_sede : sede_id
 sedes     ||--o{ camaras   : sede_id
 camaras   ||--o{ sensores  : camara_id
 sensores  ||--o{ lecturas  : sensor_id
