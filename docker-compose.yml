@@ -1,0 +1,53 @@
+services:
+
+  # ──────────────────────────────────────────
+  # Base de datos PostgreSQL
+  # ──────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: cadena_frio_db
+    environment:
+      POSTGRES_DB:       cadena_frio
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Se ejecutan en orden al crear la BD por primera vez
+      - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./sql/02_seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
+    networks:
+      - cadena_frio_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cadena_frio"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ──────────────────────────────────────────
+  # pgAdmin — panel visual de la base de datos
+  # Acceso: http://localhost:5050
+  # Email:    admin@farmacia.com
+  # Password: admin123
+  # ──────────────────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: cadena_frio_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL:    admin@farmacia.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cadena_frio_net
+
+volumes:
+  postgres_data:
+
+networks:
+  cadena_frio_net:
+    driver: bridge

@@ -1,0 +1,100 @@
+@startuml
+title Diagrama ER — Sistema de Monitoreo de Cadena de Frío\nv1.0
+
+left to right direction
+hide circle
+skinparam linetype ortho
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam defaultFontName Arial
+
+' =========================
+' AUTH
+' =========================
+package "auth" {
+  entity "usuarios" as usuarios {
+    *id          : SERIAL       <<PK>>
+    --
+    *nombre      : VARCHAR(80)
+    *email       : VARCHAR(120) <<UQ>>
+    *password_hash : VARCHAR(255)
+    *rol         : VARCHAR(20)
+    *activo      : BOOLEAN
+    created_at   : TIMESTAMP
+  }
+}
+
+' =========================
+' INFRAESTRUCTURA
+' =========================
+package "infraestructura" {
+  entity "sedes" as sedes {
+    *id          : SERIAL       <<PK>>
+    --
+    *nombre      : VARCHAR(100)
+    *tipo        : VARCHAR(30)
+    direccion    : VARCHAR(200)
+    created_at   : TIMESTAMP
+  }
+
+  entity "camaras" as camaras {
+    *id          : SERIAL       <<PK>>
+    --
+    *sede_id     : INT          <<FK>>
+    *nombre      : VARCHAR(80)
+    *temp_min    : DECIMAL(5,2)
+    *temp_max    : DECIMAL(5,2)
+    *activa      : BOOLEAN
+    created_at   : TIMESTAMP
+  }
+}
+
+' =========================
+' MONITOREO
+' =========================
+package "monitoreo" {
+  entity "sensores" as sensores {
+    *id           : SERIAL      <<PK>>
+    --
+    *camara_id    : INT         <<FK>>
+    *tipo         : VARCHAR(30)
+    *unidad       : VARCHAR(10)
+    *activo       : BOOLEAN
+    created_at    : TIMESTAMP
+  }
+
+  entity "lecturas" as lecturas {
+    *id            : BIGSERIAL  <<PK>>
+    --
+    *sensor_id     : INT        <<FK>>
+    *valor         : DECIMAL(10,4)
+    *registrado_en : TIMESTAMP
+  }
+
+  entity "alertas" as alertas {
+    *id           : SERIAL      <<PK>>
+    --
+    *camara_id    : INT         <<FK>>
+    sensor_id     : INT         <<FK>>
+    lectura_id    : BIGINT      <<FK>>
+    *tipo         : VARCHAR(30)
+    *mensaje      : VARCHAR(255)
+    *resuelta     : BOOLEAN
+    *creado_en    : TIMESTAMP
+    resuelto_en   : TIMESTAMP
+    resuelto_por  : INT         <<FK>>
+  }
+}
+
+' =========================
+' RELACIONES
+' =========================
+sedes     ||--o{ camaras   : sede_id
+camaras   ||--o{ sensores  : camara_id
+sensores  ||--o{ lecturas  : sensor_id
+camaras   ||--o{ alertas   : camara_id
+sensores  |o--o{ alertas   : sensor_id
+lecturas  |o--o{ alertas   : lectura_id
+usuarios  ||--o{ alertas   : resuelto_por
+
+@enduml
