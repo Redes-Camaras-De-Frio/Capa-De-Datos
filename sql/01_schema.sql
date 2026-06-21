@@ -21,7 +21,7 @@ CREATE TABLE usuarios (
     nombre        VARCHAR(80)  NOT NULL,
     email         VARCHAR(120) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    rol           VARCHAR(20)  NOT NULL CHECK (rol IN ('admin', 'operador', 'tecnico')),
+    rol           VARCHAR(20)  NOT NULL CHECK (rol IN ('admin', 'operador')),
     activo        BOOLEAN      NOT NULL DEFAULT TRUE,
     created_at    TIMESTAMP    NOT NULL DEFAULT NOW()
 );

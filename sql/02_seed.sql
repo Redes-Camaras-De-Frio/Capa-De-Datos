@@ -12,8 +12,7 @@
 
 INSERT INTO usuarios (nombre, email, password_hash, rol) VALUES
     ('Administrador',   'admin@farmacia.com',    '$2b$10$EAacrno6PkZhwRMaLt7NDeo3AKHHdELO845f2lwhFcIt7vMRdcnva', 'admin'),
-    ('Operador Central','operador@farmacia.com', '$2b$10$EAacrno6PkZhwRMaLt7NDeo3AKHHdELO845f2lwhFcIt7vMRdcnva', 'operador'),
-    ('Técnico',         'tecnico@farmacia.com',  '$2b$10$EAacrno6PkZhwRMaLt7NDeo3AKHHdELO845f2lwhFcIt7vMRdcnva', 'tecnico');
+    ('Operador Central','operador@farmacia.com', '$2b$10$EAacrno6PkZhwRMaLt7NDeo3AKHHdELO845f2lwhFcIt7vMRdcnva', 'operador');
 
 -- ============================================================
 -- SEDES
@@ -47,8 +46,7 @@ INSERT INTO camaras (sede_id, nombre, temp_min, temp_max) VALUES
 -- ============================================================
 
 INSERT INTO usuario_sede (usuario_id, sede_id) VALUES
-    (2, 1),   -- Operador Central → Farmacia Central
-    (3, 2);   -- Técnico → Distribuidora Norte
+    (2, 1);   -- Operador Central → Farmacia Central
 
 -- ============================================================
 -- SENSORES

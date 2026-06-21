@@ -37,7 +37,7 @@ docker-compose -f Capa_de_Datos/docker-compose.yml up -d
 
 | Tabla | Descripción |
 |---|---|
-| `usuarios` | Personas con acceso al sistema (admin, operador, técnico) |
+| `usuarios` | Personas con acceso al sistema (admin, operador) |
 | `sedes` | Ubicaciones físicas (farmacias, distribuidoras, boticas) |
 | `camaras` | Cámaras de frío con rango de temperatura permitido |
 | `sensores` | Sensores por cámara (temperatura, humedad, apertura, etc.) |
@@ -50,7 +50,6 @@ docker-compose -f Capa_de_Datos/docker-compose.yml up -d
 |---|---|---|
 | admin@farmacia.com | admin123 | admin |
 | operador@farmacia.com | admin123 | operador |
-| tecnico@farmacia.com | admin123 | tecnico |
 
 ## Conexión
 
